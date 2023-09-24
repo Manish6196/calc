@@ -1,8 +1,9 @@
 import { useState } from 'react'
+
+import Button from 'components/button'
+import { ButtonIds } from 'types/button.types'
+import { buttons } from 'utils/button.utils'
 import styles from './Calculator.module.css'
-import Button from '../button'
-import { ButtonIds } from '../../types/button.types'
-import { buttons } from '../../utils/button.utils'
 
 function App(): JSX.Element {
   const [displayValue, setDisplayValue] = useState<string>('0')

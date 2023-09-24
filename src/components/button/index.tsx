@@ -1,6 +1,6 @@
-import { ButtonVariants } from '../../types/button.types'
-import styles from './Button.module.css'
 import classNames from 'classnames'
+import { ButtonVariants } from 'types/button.types'
+import styles from './Button.module.css'
 
 type ButtoProps = {
   onClick(v: string | undefined): void
