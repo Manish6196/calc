@@ -1,40 +1,56 @@
-import { useState } from 'react'
+import { useState, useReducer } from 'react'
 
 import Button from 'components/button'
 import { ButtonIds } from 'types/button.types'
 import { buttons } from 'utils/button.utils'
 import { calculate } from 'utils/compute.utils'
+import {
+  DisplayValueActions,
+  displayValueReducer,
+  displayValueInitialState,
+} from './DisplayValue.reducer'
 import styles from './Calculator.module.css'
 
 function Calculator(): JSX.Element {
-  const [displayValue, setDisplayValue] = useState<string>('0')
+  const [{ displayValue }, dispatch] = useReducer(
+    displayValueReducer,
+    displayValueInitialState
+  )
   const [degreesMode, setDegreesMode] = useState<boolean>(true)
 
   const appendToDisplay = (value: string | undefined): void => {
-    if (value === undefined) return
-    if (displayValue === '0' || displayValue === 'Syntax Error') {
-      setDisplayValue(value)
-    } else {
-      setDisplayValue(displayValue + value)
-    }
-  }
-
-  const backSpace = (): void => {
-    setDisplayValue(d => {
-      if (d.length <= 1) {
-        return '0'
-      } else {
-        return d.slice(0, d.length - 1)
-      }
+    if (!value) return
+    dispatch({
+      type: ['0', 'Syntax Error'].includes(displayValue)
+        ? DisplayValueActions.SET
+        : DisplayValueActions.APPEND,
+      payload: value,
     })
   }
 
+  const backSpace = (): void => {
+    if (displayValue?.length <= 1) {
+      dispatch({
+        type: DisplayValueActions.RESET,
+      })
+    } else {
+      dispatch({
+        type: DisplayValueActions.POP,
+      })
+    }
+  }
+
   const clearDisplay = (): void => {
-    setDisplayValue('0')
+    dispatch({
+      type: DisplayValueActions.RESET,
+    })
   }
 
   const computeResult = (): void => {
-    setDisplayValue(d => calculate(d, { degreesMode }))
+    dispatch({
+      type: DisplayValueActions.SET,
+      payload: calculate(displayValue, { degreesMode }),
+    })
   }
 
   const toggleDegreesRadians = (): void => {
