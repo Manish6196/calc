@@ -37,23 +37,27 @@ export const calculate = (
   displayValue: string,
   { degreesMode }: CalculateOptions
 ): string => {
-  let valueString = displayValue
+  try {
+    let valueString = displayValue
 
-  if (degreesMode) {
-    valueString = replaceWithRadians(valueString)
-  }
-
-  if (valueString.includes('!')) {
-    valueString = valueString.replace(/[\d]*!/g, match => {
-      return String(factorial(Number(match.slice(0, match.length - 1))))
-    })
-  }
-
-  replacementList.forEach(({ key, pattern, replacement }) => {
-    if (valueString.includes(key)) {
-      valueString = valueString.replace(pattern, replacement)
+    if (degreesMode) {
+      valueString = replaceWithRadians(valueString)
     }
-  })
 
-  return evalSafe(valueString).toString()
+    if (valueString.includes('!')) {
+      valueString = valueString.replace(/[\d]*!/g, match => {
+        return String(factorial(Number(match.slice(0, match.length - 1))))
+      })
+    }
+
+    replacementList.forEach(({ key, pattern, replacement }) => {
+      if (valueString.includes(key)) {
+        valueString = valueString.replace(pattern, replacement)
+      }
+    })
+
+    return evalSafe(valueString).toString()
+  } catch (e) {
+    return 'Syntax Error'
+  }
 }

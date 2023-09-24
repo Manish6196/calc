@@ -10,7 +10,8 @@ function Calculator(): JSX.Element {
   const [displayValue, setDisplayValue] = useState<string>('0')
   const [degreesMode, setDegreesMode] = useState<boolean>(true)
 
-  const appendToDisplay = (value: string): void => {
+  const appendToDisplay = (value: string | undefined): void => {
+    if (value === undefined) return
     if (displayValue === '0' || displayValue === 'Syntax Error') {
       setDisplayValue(value)
     } else {
@@ -33,11 +34,7 @@ function Calculator(): JSX.Element {
   }
 
   const computeResult = (): void => {
-    try {
-      setDisplayValue(d => calculate(d, { degreesMode }))
-    } catch (error) {
-      setDisplayValue('Syntax Error')
-    }
+    setDisplayValue(d => calculate(d, { degreesMode }))
   }
 
   const toggleDegreesRadians = (): void => {
@@ -45,28 +42,29 @@ function Calculator(): JSX.Element {
   }
 
   const getTextById = (id: string): string => {
-    if (id === ButtonIds.degreeOrRadian) {
-      return degreesMode ? 'deg' : 'rad'
+    switch (id) {
+      case ButtonIds.degreeOrRadian:
+        return degreesMode ? 'deg' : 'rad'
+      default:
+        return ''
     }
-    return ''
   }
 
   const getClickHandlerById = (
     id: string
   ): ((v: string | undefined) => void) => {
-    if (id === ButtonIds.degreeOrRadian) {
-      return toggleDegreesRadians
+    switch (id) {
+      case ButtonIds.degreeOrRadian:
+        return toggleDegreesRadians
+      case ButtonIds.equal:
+        return computeResult
+      case ButtonIds.clearEntry:
+        return backSpace
+      case ButtonIds.allClear:
+        return clearDisplay
+      default:
+        return appendToDisplay
     }
-    if (id === ButtonIds.equal) {
-      return computeResult
-    }
-    if (id === ButtonIds.clearEntry) {
-      return backSpace
-    }
-    if (id === ButtonIds.allClear) {
-      return clearDisplay
-    }
-    return appendToDisplay as (value: string | undefined) => void
   }
 
   return (
