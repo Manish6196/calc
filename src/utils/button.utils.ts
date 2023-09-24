@@ -113,8 +113,8 @@ const ButtonsMap: {
     value: '6',
   },
   [ButtonIds.multiply]: {
-    text: '*',
-    value: '*',
+    text: 'x',
+    value: 'x',
   },
   [ButtonIds.one]: {
     text: '1',

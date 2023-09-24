@@ -44,4 +44,9 @@ export const replacementList = [
     pattern: '^',
     replacement: '**',
   },
+  {
+    key: 'x',
+    pattern: 'x',
+    replacement: '*',
+  },
 ]
