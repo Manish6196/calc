@@ -1,0 +1,33 @@
+.calculator {
+    background-color: #333;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 330px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.display {
+    font-size: 1.8rem;
+    color: #fff;
+    text-align: right;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 5px;
+    overflow-x: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.display::-webkit-scrollbar {
+    display: none;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}

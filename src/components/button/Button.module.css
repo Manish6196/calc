@@ -1,0 +1,32 @@
+.btn {
+  background-color: #555;
+  color: #fff;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #777;
+}
+
+.advanced {
+  background-color: #ff6b00;
+  font-size: 1rem;
+}
+
+.advanced:hover {
+  background-color: #ff8c00;
+}
+
+.equal {
+  background-color: #4285f4;
+}
+
+.equal:hover {
+  background-color: #5998fd;
+}
