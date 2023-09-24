@@ -3,9 +3,10 @@ import { useState } from 'react'
 import Button from 'components/button'
 import { ButtonIds } from 'types/button.types'
 import { buttons } from 'utils/button.utils'
+import { calculate } from 'utils/compute.utils'
 import styles from './Calculator.module.css'
 
-function App(): JSX.Element {
+function Calculator(): JSX.Element {
   const [displayValue, setDisplayValue] = useState<string>('0')
   const [degreesMode, setDegreesMode] = useState<boolean>(true)
 
@@ -31,74 +32,9 @@ function App(): JSX.Element {
     setDisplayValue('0')
   }
 
-  const calculate = (): void => {
-    function evalSafe(fn: string) {
-      return new Function('return ' + fn)()
-    }
-    function factorial(n: number): number {
-      if (n <= 1) return 1
-      return n * factorial(n - 1)
-    }
-    function degreeToRadian(degree: number): number {
-      const pi = Math.PI
-      return (degree * pi) / 180
-    }
-    function replaceWithRadians(text: string) {
-      const regex = /(sin|cos|tan)\((\d+(\.\d+)?)\)/g
-      return text.replace(regex, (match, func, value) => {
-        const degree = parseFloat(value)
-        const radian = degreeToRadian(degree)
-        switch (func) {
-          case 'sin':
-            return `sin(${radian})`
-          case 'cos':
-            return `cos(${radian})`
-          case 'tan':
-            return `tan(${radian})`
-          default:
-            return match
-        }
-      })
-    }
-
-    let valueString = displayValue
-
-    if (degreesMode) {
-      valueString = replaceWithRadians(valueString)
-    }
-
-    if (valueString.includes('!')) {
-      valueString = valueString.replace(/[\d]*!/g, match => {
-        return String(factorial(Number(match.slice(0, match.length - 1))))
-      })
-    }
-    if (valueString.includes('log')) {
-      valueString = valueString.replace('log', 'Math.log10')
-    }
-    if (valueString.includes('ln')) {
-      valueString = valueString.replace('ln', 'Math.log')
-    }
-    if (valueString.includes('sin')) {
-      valueString = valueString.replace('sin', 'Math.sin')
-    }
-    if (valueString.includes('cos')) {
-      valueString = valueString.replace('cos', 'Math.cos')
-    }
-    if (valueString.includes('tan')) {
-      valueString = valueString.replace('tan', 'Math.tan')
-    }
-    if (valueString.includes('√')) {
-      valueString = valueString.replace('√', 'Math.sqrt')
-    }
-    if (valueString.includes('π')) {
-      valueString = valueString.replace(/π/g, 'Math.PI')
-    }
-    if (valueString.includes('^')) {
-      valueString = valueString.replace('^', '**')
-    }
-
+  const computeResult = (): void => {
     try {
-      setDisplayValue(evalSafe(valueString).toString())
+      setDisplayValue(d => calculate(d, { degreesMode }))
     } catch (error) {
       setDisplayValue('Syntax Error')
     }
@@ -109,11 +45,7 @@ function App(): JSX.Element {
   }
 
   const getTextById = (id: string): string => {
-    console.log(id)
-
     if (id === ButtonIds.degreeOrRadian) {
-      console.log('hit')
-
       return degreesMode ? 'deg' : 'rad'
     }
     return ''
@@ -126,7 +58,7 @@ function App(): JSX.Element {
       return toggleDegreesRadians
     }
     if (id === ButtonIds.equal) {
-      return calculate
+      return computeResult
     }
     if (id === ButtonIds.clearEntry) {
       return backSpace
@@ -157,4 +89,4 @@ function App(): JSX.Element {
   )
 }
 
-export default App
+export default Calculator

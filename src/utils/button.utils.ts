@@ -2,7 +2,7 @@ import {
   SingleButtonConfig,
   ButtonIds,
   ButtonVariants,
-} from '../types/button.types'
+} from 'types/button.types'
 
 const ButtonsMap: {
   [keys: string]: SingleButtonConfig

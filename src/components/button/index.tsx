@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+
 import { ButtonVariants } from 'types/button.types'
 import styles from './Button.module.css'
 
